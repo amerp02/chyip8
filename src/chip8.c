@@ -50,7 +50,6 @@ struct chip8emu {
     uint8_t st;
 };
 
-
 chip8 init_emulator(void) {
     srand(time(NULL));
     chip8 emu = (chip8)malloc(sizeof(struct chip8emu));
@@ -61,7 +60,6 @@ chip8 init_emulator(void) {
     reset(emu);
     return emu;
 }
-
 
 void destroy_emulator(chip8 emu) {
     free(emu);
@@ -262,7 +260,7 @@ void execute(chip8 emu, uint16_t opcode) {
     uint8_t tens;
     uint8_t ones; 
     uint16_t i;
-
+    
     switch (opcode >> 12) { // digit1
         case 0x0:
             if (opcode == 0x00E0) {

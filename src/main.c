@@ -22,11 +22,23 @@ uint16_t key2btn(SDL_Keycode);
 void draw_screen(chip8, SDL_Renderer*);
 
 void draw_test(SDL_Renderer* renderer) {
-    SDL_SetRenderDrawColor(renderer, 255, 0, 0, SDL_ALPHA_OPAQUE);
-    SDL_Rect rect = {10, 10, 50, 50};
-    SDL_RenderFillRect(renderer, &rect);
+    SDL_Surface* image_surface = IMG_Load("../img/51Y6ShMGJHL._AC_UF894,1000_QL80_.jpg");
+    if (!image_surface) {
+        fprintf(stderr, "Failed to load image: %s\n", IMG_GetError());
+        return;
+    }
+    SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image_surface);
+    SDL_FreeSurface(image_surface); // Free the surface after creating the texture
+    if (!texture) {
+        fprintf(stderr, "Failed to create texture: %s\n", SDL_GetError());
+        return;
+    }
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
+    SDL_RenderClear(renderer);
+    SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
     SDL_Delay(3000);
+    SDL_DestroyTexture(texture);
 }
 
 uint16_t key2btn(SDL_Keycode key) {
@@ -120,7 +132,7 @@ int main(int argc, char* argv[]) {
         printf("Font[%02X] = %02X\n", i, get_ram(emu, i));
     }
 
-    FILE *rom = fopen(argv[1], "rb");
+    FILE* rom = fopen(argv[1], "rb");
     if (!rom) {
         perror("Unable to open file");
         SDL_DestroyRenderer(renderer);
