@@ -4,7 +4,8 @@
 #include <SDL2/SDL_render.h>
 #include <stddef.h>
 #include <stdio.h>
-#include "chip8.h"
+#include "../include/chip8.h"
+#include "../include/helpers.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_timer.h>
@@ -28,7 +29,7 @@ void draw_test(SDL_Renderer* renderer) {
         return;
     }
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, image_surface);
-    SDL_FreeSurface(image_surface); // Free the surface after creating the texture
+    SDL_FreeSurface(image_surface);
     if (!texture) {
         fprintf(stderr, "Failed to create texture: %s\n", SDL_GetError());
         return;
@@ -205,7 +206,6 @@ int main(int argc, char* argv[]) {
         draw_screen(emu, renderer);
     }
 
-    // Cleanup SDL
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
